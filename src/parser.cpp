@@ -123,7 +123,6 @@ std::unique_ptr<PrototypeAST> ParsePrototype() {
     std::string FnName = IdentifierStr;
     getNextToken();
 
-    printf("Function name: %s; cur token: %s\n", FnName.c_str(), CurTok);
     if(CurTok != '(') {
         return LogErrorP("Expected '(' in prototype");
     }
