@@ -69,10 +69,13 @@ std::unique_ptr<ExprAST> LogError(const char *Str);
 std::unique_ptr<PrototypeAST> LogErrorP(const char *Str);
 
 //Function prototypes
-static std::unique_ptr<ExprAST> ParseNumberExpr();
-static std::unique_ptr<ExprAST> ParseParenExpr();
-static std::unique_ptr<ExprAST> ParseIdentifierExpr();
-static std::unique_ptr<ExprAST> ParsePrimary();
-static std::unique_ptr<ExprAST> ParseExpression();
+int getNextToken();
+std::unique_ptr<ExprAST> ParseNumberExpr();
+std::unique_ptr<ExprAST> ParseParenExpr();
+std::unique_ptr<ExprAST> ParseIdentifierExpr();
+std::unique_ptr<ExprAST> ParsePrimary();
+std::unique_ptr<ExprAST> ParseExpression();
+static std::unique_ptr<ExprAST> ParseBinOpRHS(int ExprPrec, std::unique_ptr<ExprAST> LHS);
+void MainLoop();
 
 #endif

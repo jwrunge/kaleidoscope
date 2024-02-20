@@ -2,8 +2,8 @@
 #include <vector>
 #include "lexer.h"
 
-static int gettok() {
-    static int LastChar = ' ';
+int gettok() {
+    int LastChar = ' ';
 
     // Skip any whitespace
     while(isspace(LastChar))
