@@ -1,11 +1,3 @@
-#include <cctype>
-#include <cstdio>
-#include <cstdlib>
-#include <map>
-#include <memory>
-#include <string>
-#include <utility>
-#include <vector>
 #include "lexer.h"
 #include "parser.h"
 
@@ -86,20 +78,17 @@ std::unique_ptr<ExprAST> ParsePrimary() {
     }
 }
 
-static std::unique_ptr<ExprAST> ParseBinOpRHS(int ExprPrec,
-                                              std::unique_ptr<ExprAST> LHS) {
+std::unique_ptr<ExprAST> ParseBinOpRHS(int ExprPrec, std::unique_ptr<ExprAST> LHS) {
   while (true) {
     int TokPrec = GetTokPrecedence();
 
-    if (TokPrec < ExprPrec)
-      return LHS;
+    if (TokPrec < ExprPrec) return LHS;
 
     int BinOp = CurTok;
     getNextToken(); // eat binop
 
     auto RHS = ParsePrimary();
-    if (!RHS)
-      return nullptr;
+    if (!RHS) return nullptr;
 
     int NextPrec = GetTokPrecedence();
     if (TokPrec < NextPrec) {
@@ -108,8 +97,7 @@ static std::unique_ptr<ExprAST> ParseBinOpRHS(int ExprPrec,
         return nullptr;
     }
 
-    LHS =
-        std::make_unique<BinaryExprAST>(BinOp, std::move(LHS), std::move(RHS));
+    LHS = std::make_unique<BinaryExprAST>(BinOp, std::move(LHS), std::move(RHS));
   }
 }
 
@@ -133,41 +121,37 @@ std::unique_ptr<ExprAST> ParseExpression() {
 
 //Prototype parsing
 std::unique_ptr<PrototypeAST> ParsePrototype() {
-    if(CurTok != tok_identifier)
-        return LogErrorP("Expected function name in prototype");
+    if(CurTok != tok_identifier) return LogErrorP("Expected function name in prototype");
 
     std::string FnName = IdentifierStr;
     getNextToken();
 
-    if(CurTok != '(')
+    if(CurTok != '(') {
         return LogErrorP("Expected '(' in prototype");
+    }
 
     std::vector<std::string> ArgNames;
-    while(getNextToken() == tok_identifier)
-        ArgNames.push_back(IdentifierStr);
-    if(CurTok != ')')
-        return LogErrorP("Expected ')' in prototype");
+    while(getNextToken() == tok_identifier) ArgNames.push_back(IdentifierStr);
+
+    if(CurTok != ')') return LogErrorP("Expected ')' in prototype");
 
     getNextToken(); // eat )
     return std::make_unique<PrototypeAST>(FnName, std::move(ArgNames));
-}
-
-//Parse definition
-std::unique_ptr<FunctionAST> ParseDefinition() {
-    getNextToken(); // eat def
-    auto Proto = ParsePrototype();
-    if(!Proto)
-        return nullptr;
-
-    if(auto E = ParseExpression())
-        return std::make_unique<FunctionAST>(std::move(Proto), std::move(E));
-    return nullptr;
 }
 
 //Parse extern
 std::unique_ptr<PrototypeAST> ParseExtern() {
     getNextToken(); // eat extern
     return ParsePrototype();
+}
+
+std::unique_ptr<FunctionAST> ParseDefinition() {
+    getNextToken(); // eat def.
+    auto Proto = ParsePrototype();
+    if(!Proto) return nullptr;
+
+    if(auto E = ParseExpression()) return std::make_unique<FunctionAST>(std::move(Proto), std::move(E));
+    return nullptr;
 }
 
 //Top level expression parsing

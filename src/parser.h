@@ -3,6 +3,14 @@
 
 #include <iostream>
 #include <vector>
+#include <cctype>
+#include <cstdio>
+#include <cstdlib>
+#include <map>
+#include <memory>
+#include <string>
+#include <utility>
+#include <vector>
 
 class ExprAST {
     public:
@@ -75,7 +83,8 @@ std::unique_ptr<ExprAST> ParseParenExpr();
 std::unique_ptr<ExprAST> ParseIdentifierExpr();
 std::unique_ptr<ExprAST> ParsePrimary();
 std::unique_ptr<ExprAST> ParseExpression();
-static std::unique_ptr<ExprAST> ParseBinOpRHS(int ExprPrec, std::unique_ptr<ExprAST> LHS);
+std::unique_ptr<FunctionAST> ParseDefinition();
+std::unique_ptr<ExprAST> ParseBinOpRHS(int ExprPrec, std::unique_ptr<ExprAST> LHS);
 void MainLoop();
 
 #endif

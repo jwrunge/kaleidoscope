@@ -17,12 +17,12 @@ lexer:
 
 parser:
 	@echo "Building parser..."
-	@g++ -c $(srcdir)/$(parser).cpp - o $(intdir)/$(parser).o
+	@g++ -c $(srcdir)/$(parser).cpp -o $(intdir)/$(parser).o
 	@echo "Done."
 
 main:
 	@echo "Building main..."
-	@g++ $(objects) $(main).cpp -o $(distdir)/compiler
+	@g++ $(objects) $(srcdir)/$(main).cpp -o $(distdir)/compiler
 	@echo "Done."
 
 all: lexer parser main

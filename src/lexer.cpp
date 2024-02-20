@@ -2,6 +2,10 @@
 #include <vector>
 #include "lexer.h"
 
+std::string IdentifierStr;   // Filled in if tok_identifier
+double NumVal;               // Filled in if tok_number
+std::map<char, int> BinopPrecedence; //Binary expression parsing
+
 int gettok() {
     int LastChar = ' ';
 
@@ -13,12 +17,10 @@ int gettok() {
     if(isalpha(LastChar)) {
         IdentifierStr = LastChar;
 
-        if(IdentifierStr == "def") {
-            return tok_def;
-        }
-        if(IdentifierStr == "extern") {
-            return tok_extern;
-        }
+        while(isalnum((LastChar = getchar()))) IdentifierStr += LastChar;
+        
+        if(IdentifierStr == "def") return tok_def;
+        if(IdentifierStr == "extern")  return tok_extern;
         return tok_identifier;
     }
 

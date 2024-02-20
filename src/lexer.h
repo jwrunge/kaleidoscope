@@ -16,10 +16,9 @@ enum Token {
     tok_number = -5,
 };
 
-std::string IdentifierStr;   // Filled in if tok_identifier
-double NumVal;               // Filled in if tok_number
-
-std::map<char, int> BinopPrecedence; //Binary expression parsing
+extern std::string IdentifierStr;   // Filled in if tok_identifier
+extern double NumVal;               // Filled in if tok_number
+extern std::map<char, int> BinopPrecedence; //Binary expression parsing
 
 int gettok();
 int GetTokPrecedence();
