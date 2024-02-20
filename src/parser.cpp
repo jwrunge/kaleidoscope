@@ -1,5 +1,13 @@
+#include <cctype>
+#include <cstdio>
+#include <cstdlib>
+#include <map>
+#include <memory>
+#include <string>
+#include <utility>
 #include "lexer.h"
 #include "parser.h"
+#include "ast.h"
 
 int CurTok;
 int getNextToken() {

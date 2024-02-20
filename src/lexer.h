@@ -2,6 +2,8 @@
 #define LEXER_H
 
 #include <iostream>
+#include <string>
+#include <map>
 #include <map>
 
 enum Token {
