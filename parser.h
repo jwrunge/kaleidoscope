@@ -64,11 +64,15 @@ class FunctionAST {
             : Proto(std::move(Proto)), Body(std::move(Body)) {}
 };
 
+//Globals :-/
 std::unique_ptr<ExprAST> LogError(const char *Str);
 std::unique_ptr<PrototypeAST> LogErrorP(const char *Str);
+
+//Function prototypes
 static std::unique_ptr<ExprAST> ParseNumberExpr();
 static std::unique_ptr<ExprAST> ParseParenExpr();
-std::unique_ptr<ExprAST> ParseIdentifierExpr();
-std::unique_ptr<ExprAST> ParsePrimary();
+static std::unique_ptr<ExprAST> ParseIdentifierExpr();
+static std::unique_ptr<ExprAST> ParsePrimary();
+static std::unique_ptr<ExprAST> ParseExpression();
 
 #endif

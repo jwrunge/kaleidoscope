@@ -2,6 +2,7 @@
 #define LEXER_H
 
 #include <iostream>
+#include <map>
 
 enum Token {
     tok_eof = -1,
@@ -18,6 +19,9 @@ enum Token {
 static std::string IdentifierStr;   // Filled in if tok_identifier
 static double NumVal;               // Filled in if tok_number
 
+static std::map<char, int> BinopPrecedence; //Binary expression parsing
+
 static int gettok();
+static int GetTokPrecedence();
 
 #endif
