@@ -26,11 +26,9 @@ std::unique_ptr<ExprAST> ParseNumberExpr() {
 std::unique_ptr<ExprAST> ParseParenExpr() {
     getNextToken(); // eat (
     auto V = ParseExpression();
-    if(!V)
-        return nullptr;
+    if(!V) return nullptr;
 
-    if(CurTok != ')')
-        return LogError("expected ')'");
+    if(CurTok != ')') return LogError("expected ')'");
     getNextToken(); // eat )
     return V;
 }
@@ -40,8 +38,7 @@ std::unique_ptr<ExprAST> ParseIdentifierExpr() {
 
     getNextToken(); // eat identifier
 
-    if(CurTok != '(')
-        return std::make_unique<VariableExprAST>(IdName);
+    if(CurTok != '(') return std::make_unique<VariableExprAST>(IdName);
 
     getNextToken(); // eat (
     std::vector<std::unique_ptr<ExprAST>> Args;
@@ -106,8 +103,8 @@ int GetTokPrecedence() {
         return -1;
 
     int TokPrec = BinopPrecedence[CurTok];
-    if(TokPrec <= 0)
-        return -1;
+
+    if(TokPrec <= 0) return -1;
     return TokPrec;
 }
 
@@ -126,6 +123,7 @@ std::unique_ptr<PrototypeAST> ParsePrototype() {
     std::string FnName = IdentifierStr;
     getNextToken();
 
+    printf("Function name: %s; cur token: %s\n", FnName.c_str(), CurTok);
     if(CurTok != '(') {
         return LogErrorP("Expected '(' in prototype");
     }

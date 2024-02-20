@@ -10,8 +10,7 @@ int gettok() {
     int LastChar = ' ';
 
     // Skip any whitespace
-    while(isspace(LastChar))
-        LastChar = getchar();
+    while(isspace(LastChar)) LastChar = getchar();
 
     // Handle identifiers and literals
     if(isalpha(LastChar)) {
@@ -32,23 +31,20 @@ int gettok() {
             LastChar = getchar();
         } while (isdigit(LastChar) || LastChar == '.');
 
-        NumVal = strtod(NumStr.c_str(), 0);
+        NumVal = strtod(NumStr.c_str(), nullptr);
         return tok_number;
     }
 
     // Handle comments
     if(LastChar == '#') {
-        do 
-            LastChar = getchar();
+        do LastChar = getchar();
         while (LastChar != EOF && LastChar != '\n' && LastChar != '\r');
 
-        if(LastChar != EOF)
-            return gettok();
+        if(LastChar != EOF) return gettok();
     }
 
     // Check for end of file. Don't eat the EOF
-    if(LastChar == EOF)
-        return tok_eof;
+    if(LastChar == EOF) return tok_eof;
 
     // Otherwise, just return the character as its ascii value
     int ThisChar = LastChar;
