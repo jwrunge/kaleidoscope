@@ -7,7 +7,7 @@ double NumVal;               // Filled in if tok_number
 std::map<char, int> BinopPrecedence; //Binary expression parsing
 
 int gettok() {
-    int LastChar = ' ';
+    static int LastChar = ' ';
 
     // Skip any whitespace
     while(isspace(LastChar)) LastChar = getchar();
