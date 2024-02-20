@@ -2,33 +2,23 @@ srcdir = "./src"
 distdir = "./dist"
 intdir = "./intermediate"
 
-lexer = lexer
-parser = parser
-main = main
+lexer = $(srcdir)/lexer.cpp
+parser = $(srcdir)/parser.cpp
+main = $(srcdir)/main.cpp
 
+#cpath = #-I/usr/include/llvm-18 -I/usr/include/llvm-c-18
 objects = $(intdir)/$(lexer).o $(intdir)/$(parser).o
+files = $(lexer) $(parser) $(main)
 
-.DEFAULT_GOAL := all
-
-lexer:
-	@echo "Building lexer..."
-	@g++ -c $(srcdir)/$(lexer).cpp -o $(intdir)/$(lexer).o
-	@echo "Done."
-
-parser:
-	@echo "Building parser..."
-	@g++ -c $(srcdir)/$(parser).cpp -o $(intdir)/$(parser).o
-	@echo "Done."
+.DEFAULT_GOAL := main
 
 main:
 	@echo "Building main..."
-	@g++ $(objects) $(srcdir)/$(main).cpp -o $(distdir)/compiler
+	@echo g++ $(llvm-config --ldflags --libs) $(files) -o $(distdir)/compiler
+	@g++ $(cpath) $(files) -o $(distdir)/compiler
 	@echo "Done."
-
-all: lexer parser main
 
 clean:
 	@echo "Cleaning..."
 	@rm -f $(distdir)/* 
-	@rm -f $(intdir)/* 
 	@echo "Done."
