@@ -14,8 +14,7 @@ files = $(lexer) $(parser) $(main)
 
 main:
 	@echo "Building main..."
-	@echo g++ `llvm-config --cxxflags --ldflags --system-libs --libs core` $(files) -o $(distdir)/compiler
-	@g++ $(cpath) $(files) -o $(distdir)/compiler
+	@g++ `llvm-config-18 --cxxflags --ldflags --system-libs --libs core` $(files) -o $(distdir)/compiler
 	@echo "Done."
 
 clean:
