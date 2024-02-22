@@ -4,11 +4,10 @@ intdir = "./intermediate"
 
 lexer = $(srcdir)/lexer.cpp
 parser = $(srcdir)/parser.cpp
+codegen = $(srcdir)/codegen.cpp
 main = $(srcdir)/main.cpp
 
-#cpath = #-I/usr/include/llvm-18 -I/usr/include/llvm-c-18
-objects = $(intdir)/$(lexer).o $(intdir)/$(parser).o
-files = $(lexer) $(parser) $(main)
+files = $(lexer) $(parser) $(codegen) $(main)
 
 .DEFAULT_GOAL := main
 

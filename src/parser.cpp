@@ -1,10 +1,11 @@
+#include <algorithm>
 #include <cctype>
 #include <cstdio>
 #include <cstdlib>
 #include <map>
 #include <memory>
 #include <string>
-#include <utility>
+#include <vector>
 #include "lexer.h"
 #include "parser.h"
 #include "ast.h"
@@ -169,27 +170,45 @@ std::unique_ptr<FunctionAST> ParseTopLevelExpr() {
 }
 
 //Top level parsing
-
 void HandleDefinition() {
-    if(ParseDefinition()) {
-        fprintf(stderr, "Parsed a function definition.\n");
-    } else {
-        getNextToken();
+    if (auto FnAST = ParseDefinition()) {
+    if (auto *FnIR = FnAST->codegen()) {
+      fprintf(stderr, "Read function definition:");
+      FnIR->print(llvm::errs());
+      fprintf(stderr, "\n");
     }
+  } else {
+    // Skip token for error recovery.
+    getNextToken();
+  }
 }
 
 void HandleExtern() {
-    if(ParseExtern()) {
-        fprintf(stderr, "Parsed an extern\n");
-    } else {
-        getNextToken();
+    if (auto ProtoAST = ParseExtern()) {
+    if (auto *FnIR = ProtoAST->codegen()) {
+      fprintf(stderr, "Read extern: ");
+      FnIR->print(llvm::errs());
+      fprintf(stderr, "\n");
     }
+  } else {
+    // Skip token for error recovery.
+    getNextToken();
+  }
 }
 
 void HandleTopLevelExpression() {
-    if(ParseTopLevelExpr()) {
-        fprintf(stderr, "Parsed a top-level expr\n");
+    // Evaluate a top-level expression into an anonymous function.
+    if (auto FnAST = ParseTopLevelExpr()) {
+        if (auto *FnIR = FnAST->codegen()) {
+        fprintf(stderr, "Read top-level expression:");
+        FnIR->print(llvm::errs());
+        fprintf(stderr, "\n");
+
+        // Remove the anonymous expression.
+        FnIR->eraseFromParent();
+        }
     } else {
+        // Skip token for error recovery.
         getNextToken();
     }
 }

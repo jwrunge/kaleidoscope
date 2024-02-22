@@ -22,7 +22,6 @@
 #include "llvm/IR/Type.h"
 #include "llvm/IR/Verifier.h"
 #include "lexer.h"
-#include "parser.h"
 
 class ExprAST {
     public:
@@ -80,7 +79,7 @@ class PrototypeAST {
         
         const std::string &getName() const { return Name; }
 
-        llvm::Value *codegen();
+        llvm::Function *codegen();
 };
 
 class FunctionAST {
@@ -91,7 +90,7 @@ class FunctionAST {
         FunctionAST(std::unique_ptr<PrototypeAST> Proto, std::unique_ptr<ExprAST> Body)
             : Proto(std::move(Proto)), Body(std::move(Body)) {}
 
-        llvm::Value *codegen();
+        llvm::Function *codegen();
 };
 
 #endif
